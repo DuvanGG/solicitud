@@ -12,7 +12,7 @@ public class RegistrarSolicitudUseCase {
 	
 	private final SolicitudRepository solicitudRepository;
 	
-	private final Set<String> tiposPrestamoValidos = Set.of("PERSONAL", "HIPOTECARIO", "VEHICULO");
+	private final Set<Integer> tiposPrestamoValidos = Set.of(1);
 	
 	public Mono<Solicitud> registrarSolicitud(Solicitud solicitud) {
 		// log.info("Iniciando registro de solicitud para cliente {}",
@@ -28,9 +28,9 @@ public class RegistrarSolicitudUseCase {
 		if (solicitud.getPlazo() == null || solicitud.getPlazo() <= 0) {
 			return Mono.error(new IllegalArgumentException("El plazo debe ser mayor que 0"));
 		}
-//		if (!tiposPrestamoValidos.contains(solicitud.getIdTipoPrestamo())) {
-//			return Mono.error(new IllegalArgumentException("El tipo de préstamo no es válido"));
-//		}
+		if (!tiposPrestamoValidos.contains(solicitud.getIdTipoPrestamo())) {
+			return Mono.error(new IllegalArgumentException("El tipo de préstamo no es válido"));
+		}
 
 		solicitud.setIdEstado(1);
 
