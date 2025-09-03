@@ -30,3 +30,6 @@ adapters:
     schema: public
     username: duvan
     password: duvan
+security:
+  jwt:
+    secret: "hjsdf7y32hjk23hjk23hjkh23kjh23kjh23kjh23kjh23kjh23kjh23"
