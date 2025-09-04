@@ -80,7 +80,7 @@ public class Handler {
                              .map(Long::parseLong)
                              .orElse(null);
 
-        List<Integer> estados = List.of(1, 2, 3);
+        List<Integer> estados = List.of(1);
 
         return listarSolicitudesUseCase.listarSolicitudesPendientesConCursor(estados, lastId, limit)
             .collectList()

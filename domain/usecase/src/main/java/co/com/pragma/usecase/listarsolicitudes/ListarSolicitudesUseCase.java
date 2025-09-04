@@ -17,7 +17,7 @@ public class ListarSolicitudesUseCase {
     
     public Flux<Solicitud> listarSolicitudesPendientesConCursor(List<Integer> estados, Long lastId, int limit) {
         if (lastId == null) {
-            lastId = 0L; // o valor inicial apropiado para la entidad 
+            lastId = 0L; 
         }
         return solicitudRepository.listSolicitudesPorEstadosPorCursor(lastId, estados, limit);
     }
