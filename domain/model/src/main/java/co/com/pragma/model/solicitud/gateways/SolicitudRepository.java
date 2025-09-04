@@ -10,4 +10,6 @@ public interface SolicitudRepository {
 	Mono<Solicitud> save(Solicitud solicitud);
 	
 	Flux<Solicitud> listSolicitudesPorEstadosPaginado(List<Integer> estados, int limit, int offset);
+
+	Flux<Solicitud> listSolicitudesPorEstadosPorCursor(Long lastId, List<Integer> estados, int limit);
 }

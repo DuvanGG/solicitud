@@ -36,4 +36,35 @@ public class MyReactiveRepositoryAdapter extends ReactiveAdapterOperations<
             .map(entity -> mapper.map(entity, Solicitud.class));
     }
 
+	@Override
+	public Flux<Solicitud> listSolicitudesPorEstadosPorCursor(Long lastId, List<Integer> estados, int limit) {
+		return repository.findByIdGreaterThanAndIdEstadoInOrderByIdAsc(lastId, estados, limit)
+				.map(MyReactiveRepositoryAdapter::toSolicitud);
+	}
+	
+	
+	public static Solicitud toSolicitud(SolicitudEntity entity) {
+        if (entity == null) return null;
+        Solicitud solicitud = new Solicitud();
+        solicitud.setId(entity.getIdSolicitud());
+        solicitud.setMonto(entity.getMonto());
+        solicitud.setPlazo(entity.getPlazo());
+        solicitud.setEmail(entity.getEmail());
+        solicitud.setIdTipoPrestamo(entity.getIdTipoPrestamo());
+        solicitud.setIdEstado(entity.getIdEstado());
+        return solicitud;
+    }
+
+    public static SolicitudEntity toEntity(Solicitud domain) {
+        if (domain == null) return null;
+        SolicitudEntity entity = new SolicitudEntity();
+        entity.setIdSolicitud(domain.getId());
+        entity.setMonto(domain.getMonto());
+        entity.setPlazo(domain.getPlazo());
+        entity.setEmail(domain.getEmail());
+        entity.setIdTipoPrestamo(domain.getIdTipoPrestamo());
+        entity.setIdEstado(domain.getIdEstado());
+        return entity;
+    }
+
 }

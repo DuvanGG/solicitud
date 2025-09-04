@@ -14,4 +14,11 @@ public class ListarSolicitudesUseCase {
         List<Integer> estadosRevision = List.of(1 /*Pendiente*/, 2 /*Rechazada*/, 3 /*Revision Manual*/);
         return solicitudRepository.listSolicitudesPorEstadosPaginado(estadosRevision, limit, offset);
     }
+    
+    public Flux<Solicitud> listarSolicitudesPendientesConCursor(List<Integer> estados, Long lastId, int limit) {
+        if (lastId == null) {
+            lastId = 0L; // o valor inicial apropiado para la entidad 
+        }
+        return solicitudRepository.listSolicitudesPorEstadosPorCursor(lastId, estados, limit);
+    }
 }

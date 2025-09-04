@@ -49,6 +49,7 @@ public class SecurityConfig {
 	                    .pathMatchers("/api/v1/login").permitAll()
 	                    .pathMatchers(HttpMethod.GET, "/api/v1/solicitud/**").hasAnyRole("ASESOR")
 	                    .pathMatchers(HttpMethod.POST, "/api/v1/solicitud/**").hasAnyRole("CLIENTE")
+	                    .pathMatchers(HttpMethod.GET, "/api/v2/solicitud/**").hasAnyRole("ASESOR")
 	                    .anyExchange().authenticated()
 	            )
 				.addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)

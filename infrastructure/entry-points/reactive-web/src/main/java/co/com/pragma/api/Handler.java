@@ -2,13 +2,18 @@ package co.com.pragma.api;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import co.com.pragma.model.solicitud.Solicitud;
+import co.com.pragma.model.solicitud.responses.SolicitudPageResponse;
 import co.com.pragma.usecase.listarsolicitudes.ListarSolicitudesUseCase;
 import co.com.pragma.usecase.registrarsolicitud.RegistrarSolicitudUseCase;
 import reactor.core.publisher.Mono;
@@ -66,4 +71,25 @@ public class Handler {
             .onErrorResume(e -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .bodyValue(new ErrorResponse("Error procesando la solicitud: " + e.getMessage())));
     }
+    
+    public Mono<ServerResponse> listarSolicitudesPendiendientes(ServerRequest request) {
+        int limit = request.queryParam("limit")
+                           .map(Integer::parseInt)
+                           .orElse(5);
+        Long lastId = request.queryParam("lastId")
+                             .map(Long::parseLong)
+                             .orElse(null);
+
+        List<Integer> estados = List.of(1, 2, 3);
+
+        return listarSolicitudesUseCase.listarSolicitudesPendientesConCursor(estados, lastId, limit)
+            .collectList()
+            .flatMap(items -> {
+                Long nextCursor = items.isEmpty() ? null : items.get(items.size() - 1).getId();
+                SolicitudPageResponse response = new SolicitudPageResponse(items, nextCursor);
+                return ServerResponse.ok().bodyValue(response);
+            });
+    }
+    
+    
 }

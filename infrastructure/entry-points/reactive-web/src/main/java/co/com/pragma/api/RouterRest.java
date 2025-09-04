@@ -56,6 +56,7 @@ public class RouterRest {
                 .andRoute(POST("/api/usecase/otherpath"), handler::listenPOSTUseCase)
                 .and(route(GET("/api/otherusercase/path"), handler::listenGETOtherUseCase))
                 .and(route(POST("/api/v1/solicitud"), handler::registrarSolicitud))
-                .andRoute(GET("/api/v1/solicitud"), handler::listarSolicitudes);
+                .andRoute(GET("/api/v1/solicitud"), handler::listarSolicitudes)
+                .andRoute(GET("/api/v2/solicitud"), handler::listarSolicitudesPendiendientes);
     }
 }
