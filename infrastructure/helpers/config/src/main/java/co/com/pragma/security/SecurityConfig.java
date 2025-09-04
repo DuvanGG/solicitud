@@ -48,6 +48,7 @@ public class SecurityConfig {
 	            .authorizeExchange(exchange -> exchange
 	                    .pathMatchers("/api/v1/login").permitAll()
 	                    .pathMatchers(HttpMethod.GET, "/api/v1/solicitud/**").hasAnyRole("ASESOR")
+	                    .pathMatchers(HttpMethod.POST, "/api/v1/solicitud/**").hasAnyRole("CLIENTE")
 	                    .anyExchange().authenticated()
 	            )
 				.addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
