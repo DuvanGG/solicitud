@@ -26,8 +26,8 @@ public class MyReactiveRepositoryAdapter extends ReactiveAdapterOperations<
     
     @Override
     public Mono<Solicitud> save(Solicitud solicitud) {
-        return repository.save(mapper.map(solicitud, SolicitudEntity.class))
-                .map(entity -> mapper.map(entity, Solicitud.class));
+        return repository.save(toEntity(solicitud))
+            .map(MyReactiveRepositoryAdapter::toSolicitud);
     }
 
 	@Override
@@ -41,6 +41,13 @@ public class MyReactiveRepositoryAdapter extends ReactiveAdapterOperations<
 		return repository.findByIdGreaterThanAndIdEstadoInOrderByIdAsc(lastId, estados, limit)
 				.map(MyReactiveRepositoryAdapter::toSolicitud);
 	}
+	
+	@Override
+	public Mono<Solicitud> findById(Long id) {
+	    return repository.findById(id)
+	        .map(entity -> MyReactiveRepositoryAdapter.toSolicitud(entity));
+	}
+	
 	
 	
 	public static Solicitud toSolicitud(SolicitudEntity entity) {

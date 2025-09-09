@@ -12,4 +12,6 @@ public interface SolicitudRepository {
 	Flux<Solicitud> listSolicitudesPorEstadosPaginado(List<Integer> estados, int limit, int offset);
 
 	Flux<Solicitud> listSolicitudesPorEstadosPorCursor(Long lastId, List<Integer> estados, int limit);
+	
+	Mono<Solicitud> findById(Long id);
 }

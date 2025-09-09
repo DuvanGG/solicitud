@@ -33,3 +33,9 @@ adapters:
 security:
   jwt:
     secret: "hjsdf7y32hjk23hjk23hjkh23kjh23kjh23kjh23kjh23kjh23kjh23"
+
+logging:
+  level:
+    org.springframework.web.reactive.function.server: DEBUG
+    co.com.pragma.api: DEBUG
+

@@ -19,4 +19,5 @@ public interface MyReactiveRepository
 	@Query("SELECT * FROM solicitud WHERE id_solicitud > :lastId AND id_estado IN (:estados) ORDER BY id_solicitud ASC LIMIT :limit")
 	Flux<SolicitudEntity> findByIdGreaterThanAndIdEstadoInOrderByIdAsc(Long lastId, List<Integer> estados, int limit);
 	
+	
 }

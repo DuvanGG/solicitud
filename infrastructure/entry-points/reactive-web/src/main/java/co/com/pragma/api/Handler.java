@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import co.com.pragma.model.solicitud.Solicitud;
 import co.com.pragma.model.solicitud.responses.SolicitudPageResponse;
+import co.com.pragma.usecase.actualizarestadosolicitud.ActualizarEstadoSolicitudUseCase;
 import co.com.pragma.usecase.listarsolicitudes.ListarSolicitudesUseCase;
 import co.com.pragma.usecase.registrarsolicitud.RegistrarSolicitudUseCase;
 import reactor.core.publisher.Mono;
@@ -25,6 +26,7 @@ public class Handler {
 //private  final UseCase2 useCase2;
 	private final RegistrarSolicitudUseCase registrarSolicitudUseCase;
 	private final ListarSolicitudesUseCase listarSolicitudesUseCase;
+	private final ActualizarEstadoSolicitudUseCase actualizarEstadoSolicitudUseCase;
 
     public Mono<ServerResponse> listenGETUseCase(ServerRequest serverRequest) {
         // useCase.logic();
@@ -89,6 +91,23 @@ public class Handler {
                 SolicitudPageResponse response = new SolicitudPageResponse(items, nextCursor);
                 return ServerResponse.ok().bodyValue(response);
             });
+    }
+    
+    public Mono<ServerResponse> actualizarEstado(ServerRequest request) {
+    	System.out.println("Entrando a actualizarEstado con id: " + request.pathVariable("id"));
+        Long id = Long.valueOf(request.pathVariable("id"));
+        Integer nuevoEstado = Integer.valueOf(request.queryParam("nuevoEstado")
+                                   .orElseThrow(() -> new IllegalArgumentException("nuevoEstado es requerido")));
+
+        return actualizarEstadoSolicitudUseCase.ejecutar(id, nuevoEstado)
+            .flatMap(solicitudActualizada ->
+                ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(solicitudActualizada))
+            .onErrorResume(e ->
+                ServerResponse.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new ErrorResponse("Error actualizando estado: " + e.getMessage())));
     }
     
     
