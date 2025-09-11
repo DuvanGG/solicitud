@@ -24,18 +24,20 @@ cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
 adapters:
   r2dbc:
-    host: localhost
+    host: "postgres-db"
     port: 5432
-    database: solicitudes
-    schema: public
-    username: duvan
-    password: duvan
+    database: "solicitudes"
+    schema: "public"
+    username: "duvan"
+    password: "duvan"
 security:
   jwt:
     secret: "hjsdf7y32hjk23hjk23hjkh23kjh23kjh23kjh23kjh23kjh23kjh23"
-
 logging:
   level:
-    org.springframework.web.reactive.function.server: DEBUG
-    co.com.pragma.api: DEBUG
-
+    org.springframework.web.reactive.function.server: "DEBUG"
+    co.com.pragma.api: "DEBUG"
+adapter:
+  sqs:
+    region: "us-east-2"
+    queueUrl: "https://sqs.us-east-2.amazonaws.com/560580021338/NotifCambioEstado"
